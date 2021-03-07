@@ -46,17 +46,7 @@ function Microphone (_fft) {
         // analyser.getByteTimeDomainData(self.spectrum);
 
         //JAG - I want to log out which frequency bin had the spike
-        var spikeValue = 0
-        var spikeIndex = 0
-        for (i = 0; i < self.spectrum.length; i++) {
-          if (self.spectrum[i] > spikeValue) {
-            spikeValue = self.spectrum[i]
-            spikeIndex = i
-          }
-        }
-        console.log('Largest spike value = ' + spikeValue)
-        console.log('Largest spike index = ' + spikeIndex)
-        console.log(self.spectrum)
+        interpret(self.spectrum, SAMPLE_RATE, FFT_SIZE)
 
         self.vol = self.getRMS(self.spectrum)
         // get peak - a hack when our volumes are low
@@ -123,6 +113,8 @@ function rgb (r, g, b) {
 function clamp (value, min, max) {
   return Math.min(Math.max(value, Math.min(min, max)), Math.max(min, max))
 }
+
+function interpretData () {}
 
 document.body.addEventListener('click', function () {
   var Mic = new Microphone(1024 * 16)
