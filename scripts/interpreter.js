@@ -20,7 +20,8 @@ D# 155.6
 function interpret (spectrum, sample_rate, fft_size) {
   var spikeValue = 0
   var spikeIndex = 0
-  for (i = 0; i < spectrum.length; i++) {
+  var filterBelowIndex = getBinOfLowestFrequencyWeCareAbout(sample_rate, fft_size)
+  for (i = filterBelowIndex; i < spectrum.length; i++) {
     if (spectrum[i] > spikeValue) {
       spikeValue = spectrum[i]
       spikeIndex = i
@@ -34,15 +35,51 @@ function interpret (spectrum, sample_rate, fft_size) {
   console.log('estimated frequency: ' + frequency)
   var fundamental_frequency = getFundamentalFrequency(frequency)
   console.log('estimated fundamental frequency' + fundamental_frequency)
-  var closest_note = getClosestNote(fundamental_frequency)
+  var closest_note = getClosestNoteFrequency(fundamental_frequency)
   console.log('estimated closest note' + closest_note)
   var note_letter = getNoteLetter(closest_note)
   console.log('estimated note: ' + note_letter)
+  var how_close = howClose(fundamental_frequency, closest_note)
+  console.log('How close? ', howClosePrint(how_close))
+}
+
+//-1 = low, 0 = right on, 1 = high
+function howClose(fundamental_frequency, closest_note_frequency) {
+  var difference = fundamental_frequency - closest_note_frequency
+  if (Math.abs(difference) < 0.8) { // this should be a "resolution" variable
+    return 0
+  } else {
+    if (difference < 0) {
+      return -1
+    } else {
+      return 1
+    }
+  }
+}
+
+function howClosePrint(how_close) {
+  if (how_close === -1) {
+    return "a little low"
+  } else if (how_close === 0) {
+    return "right on!"
+  } else {
+    return "a little high"
+  }
 }
 
 function getFrequency (bin_number, sample_rate, fft_size) {
-  var bin_width = sample_rate / fft_size
+  var bin_width = getBinWidth(sample_rate, fft_size)
   return bin_number * bin_width
+}
+
+function getBinOfLowestFrequencyWeCareAbout(sample_rate, fft_size) {
+  var bin_width = getBinWidth(sample_rate, fft_size)
+  var lowestFrequencyWeCareAbout = 73.42 // D
+  return Math.floor(lowestFrequencyWeCareAbout / bin_width)
+}
+
+function getBinWidth(sample_rate, fft_size) {
+  return sample_rate / fft_size
 }
 
 var freq_notes = {}
@@ -52,7 +89,7 @@ function getFundamentalFrequency (frequency) {
     for (var i = 1; i <= 5; i++) {
         frequency /= i
         if (frequency < 160) {
-            return frequency;
+            return frequency
         }
     }
 }
@@ -78,7 +115,7 @@ var n = {
     '77.78': 'D#',
     '82.41': 'E',
     '87.31': 'F',
-    '92.50': 'F#',
+    '92.5': 'F#',
     '98': 'G',
     '103.8': 'G#',
     '110': 'A',
@@ -89,8 +126,8 @@ var n = {
     '146.8': 'D',
     '155.6': 'D#',
 }
-var notes = [73.42, 77.78, 82.41, 87.31, 92.50, 98, 103.8, 110, 116.5, 123.5, 130.8, 138.6, 146.8, 155.6]
-function getClosestNote (frequency) {
+var notes = [73.42, 77.78, 82.41, 87.31, 92.5, 98, 103.8, 110, 116.5, 123.5, 130.8, 138.6, 146.8, 155.6]
+function getClosestNoteFrequency (frequency) {
     var smallestDifference = Number.MAX_SAFE_INTEGER;
     var closestNote = Number.MAX_SAFE_INTEGER
     for (var i = 0; i < notes.length; i++) {

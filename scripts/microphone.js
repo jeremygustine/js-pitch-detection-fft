@@ -4,8 +4,8 @@ function Microphone (_fft) {
   this.volume = this.vol = 0
   this.peak_volume = 0
   var self = this
-  //   var audioContext = new AudioContext({ sampleRate: 48000 * 2 })
-  var audioContext = new AudioContext()
+  var audioContext = new AudioContext({ sampleRate: (48000 / 2) / 2 })
+  // var audioContext = new AudioContext()
   var SAMPLE_RATE = audioContext.sampleRate
 
   // this is just a browser check to see
