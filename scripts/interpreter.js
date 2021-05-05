@@ -27,8 +27,18 @@ function interpret (spectrum, sample_rate, fft_size) {
       spikeIndex = i
     }
   }
+
+  var partWeCareAbout = Array.from(spectrum).slice(filterBelowIndex, spectrum.length - 1)
+  var top20 = partWeCareAbout.map((value, index) => {
+    return { value: value, index: index + filterBelowIndex } 
+  }).sort((a, b) => (a.value > b.value) ? -1 : 1).slice(0, 20)
+
+  console.log('Top 20:')
+  console.log(top20)
+
   console.log('Largest spike value = ' + spikeValue)
   console.log('Largest spike index = ' + spikeIndex)
+  console.log('Unsorted:')
   console.log(spectrum)
 
   var frequency = getFrequency(spikeIndex, sample_rate, fft_size)
@@ -41,6 +51,17 @@ function interpret (spectrum, sample_rate, fft_size) {
   console.log('estimated note: ' + note_letter)
   var how_close = howClose(fundamental_frequency, closest_note)
   console.log('How close? ', howClosePrint(how_close))
+
+  console.log('Top 20 notes:')
+  var top20notes = top20.map(element => {
+    var freq = getFrequency(element.index, sample_rate, fft_size)
+    var fundamental_freq = getFundamentalFrequency(freq)
+    var closest = getClosestNoteFrequency(fundamental_freq)
+    var note = getNoteLetter(closest)
+    return {index: element.index, value: element.value, note: note }
+  })
+  console.log(top20notes)
+  console.log('-------------------------------------------------------------')
 }
 
 //-1 = low, 0 = right on, 1 = high
