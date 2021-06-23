@@ -28,6 +28,18 @@ function interpret (spectrum, sample_rate, fft_size) {
     }
   }
 
+  var top5 = spectrum.map((value, index) => {
+    return { value: value, index: index + filterBelowIndex } 
+  }).sort((a, b) => (a.value > b.value) ? -1 : 1).slice(0, 5)
+  console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+  console.log(JSON.stringify(top5))
+  console.log("bin width: " + getBinWidth(sample_rate, fft_size))
+  /*
+  get the average number of bins between spikes
+  multiple that by bin width
+  is that the fundamental frequency?
+  */
+
   var partWeCareAbout = Array.from(spectrum).slice(filterBelowIndex, spectrum.length - 1)
   var top20 = partWeCareAbout.map((value, index) => {
     return { value: value, index: index + filterBelowIndex } 
@@ -61,6 +73,8 @@ function interpret (spectrum, sample_rate, fft_size) {
     return {index: element.index, value: element.value, note: note }
   })
   console.log(top20notes)
+  var top10 = top20notes.slice(0, 10)
+  console.log('Most probable: ' + findMode(top10.slice(0, 10).map(x => x.note)))
   console.log('-------------------------------------------------------------')
 }
 
@@ -88,6 +102,25 @@ function howClosePrint(how_close) {
   }
 }
 
+function findMode(arr) {
+  var map = {};
+  for (var i = 0; i < arr.length; i++) {
+      if (map[arr[i]] === undefined) {
+          map[arr[i]] = 0;
+      }
+      map[arr[i]] += 1;
+  }
+  var greatestFreq = 0;
+  var mode;
+  for (var prop in map) {
+      if (map[prop] > greatestFreq) {
+          greatestFreq = map[prop];
+          mode = prop;
+      }
+  }
+  return mode;
+}
+
 function getFrequency (bin_number, sample_rate, fft_size) {
   var bin_width = getBinWidth(sample_rate, fft_size)
   return bin_number * bin_width
@@ -95,7 +128,7 @@ function getFrequency (bin_number, sample_rate, fft_size) {
 
 function getBinOfLowestFrequencyWeCareAbout(sample_rate, fft_size) {
   var bin_width = getBinWidth(sample_rate, fft_size)
-  var lowestFrequencyWeCareAbout = 73.42 // D
+  var lowestFrequencyWeCareAbout = 82.41 // E
   return Math.floor(lowestFrequencyWeCareAbout / bin_width)
 }
 
