@@ -130,7 +130,7 @@ document.body.addEventListener('click', function () {
     for (var i = 0; i < grid.length; i++) {
       var s = Mic.mapSound(i, grid.length, 5, h / 4)
       ctx.fillStyle = rgb(0)
-      ctx.fillRect(grid.x[i], grid.y[i] - s / 2, grid.spacing_x - 0.5, s)
+      ctx.fillRect(grid.x[i], grid.y[i] - s, grid.spacing_x - 0.5, s)
     }
 
     requestAnimationFrame(draw)
