@@ -3,16 +3,36 @@ Since the most prominent frequency could be a harmonic, divide it continually un
 is one the first available octave of the guitar
 */
 function getFundamentalFrequency (frequency) {
+    var fundamental = frequency
+
     for (var i = 1; i <= 5; i++) {
         var currentHarmonic = frequency  / i
-        if (currentHarmonic < 350) {
-            return currentHarmonic
+        if (currentHarmonic < 80) {
+            return fundamental
+        } else {
+            fundamental = currentHarmonic
         }
     }
 
     return frequency
 }
 
+/*
+D 73.42
+D# 77.78
+E 82.41
+F 87.31
+F# 92.50
+G 98.00
+G# 103.8
+A 110.0
+A# 116.5
+B 123.5
+C 130.8
+C# 138.6
+D 146.8
+D# 155.6
+*/
 var n = {
     '73.42': 'D',
     '77.78': 'D#',
@@ -28,23 +48,8 @@ var n = {
     '138.6': 'C#',
     '146.8': 'D',
     '155.6': 'D#',
-    '164.8': 'E',
-    '174.6': 'F',
-    '185': 'F#',
-    '196': 'G',
-    '207.7': 'G#',
-    '220': 'A',
-    '233.1': 'A#',
-    '246.9': 'B',
-    '261.6': 'C',
-    '277.2': 'C#',
-    '293.7': 'D',
-    '311.1': 'D#',
-    '329.6': 'E',
-    '349.2': 'F',
 }
-
-var notes = [73.42, 77.78, 82.41, 87.31, 92.5, 98, 103.8, 110, 116.5, 123.5, 130.8, 138.6, 146.8, 155.6, 164.8, 174.6, 185, 196, 207.7, 220, 233.1, 246.9, 261.6, 277.2, 293.7, 311.1, 329.6, 349.2]
+var notes = [73.42, 77.78, 82.41, 87.31, 92.5, 98, 103.8, 110, 116.5, 123.5, 130.8, 138.6, 146.8, 155.6]
 function getClosestNoteFrequency (frequency) {
     var smallestDifference = Number.MAX_SAFE_INTEGER;
     var closestNote = Number.MAX_SAFE_INTEGER
