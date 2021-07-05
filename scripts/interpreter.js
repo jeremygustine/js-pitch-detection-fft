@@ -1,11 +1,20 @@
+/*
+Since the most prominent frequency could be a harmonic, divide it continually until the frequency
+is one the first available octave of the guitar
+*/
 function getFundamentalFrequency (frequency) {
+    var fundamental = frequency
 
     for (var i = 1; i <= 5; i++) {
-        frequency /= i
-        if (frequency < 160) {
-            return frequency
+        var currentHarmonic = frequency  / i
+        if (currentHarmonic < 80) {
+            return fundamental
+        } else {
+            fundamental = currentHarmonic
         }
     }
+
+    return frequency
 }
 
 /*
