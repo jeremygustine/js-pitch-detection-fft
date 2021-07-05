@@ -76,6 +76,9 @@ function interpret (spectrum, sample_rate, fft_size) {
   var top10 = top20notes.slice(0, 10)
   console.log('Most probable: ' + findMode(top10.slice(0, 10).map(x => x.note)))
   console.log('-------------------------------------------------------------')
+
+  document.getElementById('frequency').innerHTML = "Estimated Fundamental Frequency: " + fundamental_frequency
+  document.getElementById('note').innerHTML = "Estimated Frequency: " + note_letter
 }
 
 //-1 = low, 0 = right on, 1 = high

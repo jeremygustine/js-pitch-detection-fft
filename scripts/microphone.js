@@ -114,31 +114,6 @@ function clamp (value, min, max) {
   return Math.min(Math.max(value, Math.min(min, max)), Math.max(min, max))
 }
 
-function interpretData () {}
-
-document.body.addEventListener('click', function () {
-  var Mic = new Microphone(1024 * 16)
-
-  var ctx = createCanvas('canvas1')
-  // make a grid 200 wide
-  // I covered how to make grids here
-  var grid = new Grid(512, 1)
-  function draw () {
-    //ctx.background(235);
-    ctx.clearRect(0, 0, w, h)
-
-    for (var i = 0; i < grid.length; i++) {
-      var s = Mic.mapSound(i, grid.length, 5, h / 4)
-      ctx.fillStyle = rgb(0)
-      ctx.fillRect(grid.x[i], grid.y[i] - s, grid.spacing_x - 0.5, s)
-    }
-
-    requestAnimationFrame(draw)
-  }
-
-  Mic.init()
-  draw()
-})
 
 //https://stackoverflow.com/questions/30013898/what-is-the-range-of-the-values-returned-by-analyser-getbytefrequencydata-in-the
 //https://stackoverflow.com/questions/14789283/what-does-the-fft-data-in-the-web-audio-api-correspond-to/14789992#14789992
