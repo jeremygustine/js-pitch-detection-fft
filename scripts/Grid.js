@@ -1,3 +1,6 @@
+// https://hackernoon.com/creative-coding-using-the-microphone-to-make-sound-reactive-art-part1-164fd3d972f3
+// Visualizations based on work by George Gally
+
 function Grid(_num_items_horiz, _num_items_vert, _grid_w, _grid_h, _startx, _starty){
 
     if (_num_items_horiz == undefined) _num_items_horiz = 1;

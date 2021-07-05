@@ -1,8 +1,11 @@
-// allows me global access to canvas and it’s width and height properties
+// https://hackernoon.com/creative-coding-using-the-microphone-to-make-sound-reactive-art-part1-164fd3d972f3
+// Visualizations based on work by George Gally
+
+
+
 var w, width, h, height;
 var canvas;
 
-	// this enables me to have many canvases all positioned on top of eachother at 100% width and height of page
 function createCanvas(canvas_name){
 	canvas = document.createElement('canvas');
 	var body = document.querySelector('body');
@@ -16,7 +19,6 @@ function createCanvas(canvas_name){
 	window.addEventListener("resize", resize, false);
 	return ctx;
 }
-
 
 function createGLCanvas(canvas_name){
 	canvas = document.createElement('canvas');
@@ -42,7 +44,6 @@ function resize(){
 		c[i].height = height;
 
 	}
-	//console.log("resize: " + w +":" + h);
 }
 
 

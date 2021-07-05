@@ -6,7 +6,7 @@ function startMicrophoneRecording() {
   var Mic = new Microphone(1024 * 16)
 
   var ctx = createCanvas('canvas1')
-  var grid = new Grid(200, 1)
+  var grid = new Grid(300, 1)
 
   function draw () {
     ctx.clearRect(0, 0, w, h)
